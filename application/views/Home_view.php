@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-
+    <script src=<?php echo base_url("scripts/Gliderjs_master/glider.js") ?>></script>
     <script src="<?php echo base_url("scripts/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js");?>"></script>
+    <link rel="stylesheet" href="<?php echo base_url('scripts/Gliderjs_master/glider.css') ?>">
     <link rel="stylesheet" href="<?php echo base_url("scripts/EasyAutocomplete-1.3.5/easy-autocomplete.min.css");?>">
     <link rel="stylesheet" href="<?php echo base_url("scripts/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css");?>">
     <title>Document</title>
+    
+
     <style type="text/css">
 
         body{
@@ -62,34 +65,10 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-        .leyendo{
+        .recomendaciones{
             width: 82.5%;
             height: auto;
             margin-top: 30px;
-        }
-        .leyendo .main{
-            margin-top: 20px;
-            background-color: rgba(218, 217, 217, 0.1);
-            display: flex;
-            overflow: hidden;
-            border-radius: 5px;
-        }
-        .tarjeta{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin: 20px;
-            width: 200px;
-            height: 300px;
-            border: 1px solid black;
-            padding: 0;
-        }
-        .tarjeta img{
-            height: 250px;
-        }
-        .tarjeta h3{
-            margin: 0;
-            text-align: center;
         }
         .buscador form{
             display: flex;
@@ -108,6 +87,36 @@
         #buscar:hover{
 			filter: invert(24%) sepia(91%) saturate(2378%) hue-rotate(261deg) brightness(70%) contrast(112%) drop-shadow(0 0 5px rgba(136,33,226,1));
         }
+        .libro{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .libro:hover > img{
+            border: 2px solid #6F1DB9;
+        }
+        .libro:hover > h3{
+            color: #6F1DB9;
+                            }   
+        .glider-contain button:hover{
+			filter: invert(24%) sepia(91%) saturate(2378%) hue-rotate(261deg) brightness(70%) contrast(112%) drop-shadow(0 0 5px rgba(136,33,226,1));
+        }
+        .glider img{
+            border-radius: 6px;
+            height: 300px;
+            width: 185px;
+            justify-content: center;
+            border: 2px solid white;
+            transition: .3s;
+        }
+        .glider h3{
+            text-align: center;
+            transition: .3s;
+            height: 10px;
+        }
+       
+
             </style>
 </head>
 <body>
@@ -117,33 +126,40 @@
 		<div class="buscador">
             <form method="POST" action="">
                 <input id="provider-json">
-                <input id="buscar" type="image" src="<?php echo base_url("imgs/lupa.png");?>">
+                <input id="buscar" type="image" src="<?php echo base_url("imgs/iconos/lupa.png");?>">
             </form>
         </div>
 
         <div class="links">
             <li><a href="">Categorias</a></li>
             <li><a href="">Algo</a></li>
-            <li><img id="User" src="<?php echo base_url("imgs/user.png");?>"></li>
-            <li><img id="LogOut" src="<?php echo base_url("imgs/LogOut.png");?>"></li>   
+            <li><img id="User" src="<?php echo base_url("imgs/iconos/user.png");?>"></li>
+            <li><img id="LogOut" src="<?php echo base_url("imgs/iconos/LogOut.png");?>"></li>   
         </div>
     </header>
     
     <main>
-        <div class="leyendo">
+        <div class="recomendaciones">
             <h1>
-                Leyendo
+                Recomendaciones
             </h1>
-            <div class="main">
-              <?php
-              foreach($recomendacion as $row){ 
-              echo "<div class="."tarjeta"."><img src='".base_url("imgs/".$row->img)."'>";
-              echo "<h3>".$row->Titulo."</h3></div>";
-            }
-              ?>
+                <div class="glider-contain">
+                <div class="glider">
+                <?php foreach($recomendacion as $row){ 
+                    echo (
+                    "<div class="."libro"."><img src=".base_url("imgs/libros/$row->img").">
+                    <h3>$row->Titulo<h3></div>");
+                     }
+                ?>
+                </div>
+                <button aria-label="Previous" class="glider-prev">«</button>
+                <button aria-label="Next" class="glider-next">»</button>
+                <div role="tablist" class="dots"></div>
             </div>
         </div>
-        <div class="recomendaciones"></div>
+
+        <div class="Leyendo">
+        </div>
     </main>
 
     <footer>
@@ -168,10 +184,10 @@
 	getValue: "Titulo",
     theme:"purple",
     template: {
-        type: "description",
-        fields: {
-            description: "Autor"
-        }
+		type: "custom",
+		method: function(value, item) {
+			return "<img src='<?php echo base_url("imgs/libros/")?>" + item.img + "' /> | " + value + " | " + item.Autor;
+		}
     },
 	list: {
         maxNumberOfElements: 5,
@@ -196,6 +212,19 @@
 
 $("#provider-json").easyAutocomplete(options);
 
+</script>
+<script>
+    window.addEventListener('load', function(){
+    new Glider(document.querySelector('.glider'), {
+  slidesToShow: 5,
+  slidesToScroll: 5,
+  draggable: true,
+  dots: '.dots',
+  arrows: {
+    prev: '.glider-prev',
+    next: '.glider-next'
+  }
+});})
 </script>
 </body>
 </html>

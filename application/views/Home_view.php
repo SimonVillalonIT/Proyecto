@@ -193,7 +193,7 @@
         </div>
 
         <div class="Valoracion">
-            <h1>Mejores valorados</h1>
+            <h1>TOP 10 Mejores valorados</h1>
             <div class="glider-contain">
                 <div class="gliders">
                     <?php foreach($mejores as $row){ 

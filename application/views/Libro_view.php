@@ -173,7 +173,7 @@
     ?>
     <?php
         foreach($puntuacion->result() as $row){
-            echo '<h3>Valoracion general:</h3>★'.$row->Valoracion;
+            echo '<h3>Valoracion general:</h3>★'.round($row->Valoracion,2);
         }    
     ?>
     <?php foreach($comentarios as $row){
